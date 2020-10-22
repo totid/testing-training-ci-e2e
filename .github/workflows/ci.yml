@@ -1,4 +1,4 @@
-name: CI Workflow
+name: CI workflow
 
 on: pull_request
 
@@ -14,3 +14,15 @@ jobs:
         run: npm run build
       - name: Tests ci-e2e
         run: npm run test:e2e:ci
+      - name: Upload screenshots when specs fail
+        if: ${{ failure()}}
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: ./cypress/screenshots
+      - name: Upload videos when specs fail
+        if: ${{ failure()}}
+        uses: actions/upload-artifact@v2
+        with:
+          name: videos
+          path: ./cypress/videos
